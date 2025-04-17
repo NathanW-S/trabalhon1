@@ -1,110 +1,109 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
 
-// Funcao que calcula o Maximo Divisor Comum (MDC) entre dois numeros
-int mdc(int a, int b) {
-    // Enquanto b nao for zero, aplica o algoritmo de Euclides
-    while (b != 0) {
-        int temp = b;
-        b = a % b;  // Calcula o resto da divisao
-        a = temp;   // Atualiza a com o valor de b
-    }
-    return a;  // Retorna o MDC
-}
+void obter_fracoes();
+void somar_fracoes(int x, int y, int u, int v);
+void subtrair_fracoes(int x, int y, int u, int v);
+void multiplicar_fracoes(int x, int y, int u, int v);
+void dividir_fracoes(int x, int y, int u, int v);
+void simplificar_fracao(int x, int y);
 
-// Funcao para simplificar a fracao num/den
-void simplificar(int num, int den) {
-    int divisor = mdc(num, den);  // Encontra o MDC entre numerador e denominador
-    num /= divisor;  // Divide o numerador pelo MDC
-    den /= divisor;  // Divide o denominador pelo MDC
-    // Se o denominador for negativo, coloca o sinal no numerador
-    if (den < 0) {
-        num = -num;
-        den = -den;
-    }
-    // Imprime a fracao simplificada
-    printf("%d/%d\n", num, den);
-}
+//Variável Global
+int a, b, c, d;
 
-// Funcao para somar duas fracoes
-void soma(int n1, int d1, int n2, int d2) {
-    // Calcula o numerador e denominador da soma das fracoes
-    int nr = n1 * d2 + n2 * d1;
-    int dr = d1 * d2;
-    // Simplifica a fracao resultante
-    simplificar(nr, dr);
-}
+//Função principal
+int main(int args, char *arg[])
+{
+    char r; //Variavel para armazenar a escolha do usuario
+    //Loop principal do programa
+    while (1)
+    {
+        system("CLS"); // Limpa a tela (específico do Windows)
+        printf("1. Somar\n");
+        printf("2. Subtrair\n");
+        printf("3. Multiplicar\n");
+        printf("4. Dividir\n");
+        printf("9. Fim\n");
+        printf("O que deseja? ");
+        r = getche(); //Lê uma tecla do usuário sem precisar
+        if (r =='9') // Sai do loop se a opção for 9
+        break;
 
-// Funcao para subtrair duas fracoes
-void subtracao(int n1, int d1, int n2, int d2) {
-    // Calcula o numerador e denominador da subtracao das fracoes
-    int nr = n1 * d2 - n2 * d1;
-    int dr = d1 * d2;
-    // Simplifica a fracao resultante
-    simplificar(nr, dr);
-}
+        obter_fracoes (); //Pede ao usuário que insira duas frações
 
-// Funcao para multiplicar duas fracoes
-void multiplicacao(int n1, int d1, int n2, int d2) {
-    // Calcula o numerador e denominador da multiplicacao das fracoes
-    int nr = n1 * n2;
-    int dr = d1 * d2;
-    // Simplifica a fracao resultante
-    simplificar(nr, dr);
-}
-
-// Funcao para dividir duas fracoes
-void divisao(int n1, int d1, int n2, int d2) {
-    // Verifica se o numerador da segunda fracao e zero (divisao por zero)
-    if (n2 == 0) {
-        printf("Erro: divisao por zero\n");
-        return;
-    }
-    // Calcula o numerador e denominador da divisao das fracoes
-    int nr = n1 * d2;
-    int dr = d1 * n2;
-    // Simplifica a fracao resultante
-    simplificar(nr, dr);
-}
-
-// Funcao principal onde o programa comeca
-int main() {
-    int n1, d1, n2, d2, operacao;
-
-    // Solicita ao usuario a primeira fracao (numerador e denominador)
-    printf("Digite o numerador e denominador da primeira fracao: ");
-    scanf("%d %d", &n1, &d1);
-
-    // Solicita ao usuario a segunda fracao (numerador e denominador)
-    printf("Digite o numerador e denominador da segunda fracao: ");
-    scanf("%d %d", &n2, &d2);
-
-    // Solicita ao usuario qual operacao deseja realizar
-    printf("Escolha a operacao: \n");
-    printf("1 - Soma\n");
-    printf("2 - Subtracao\n");
-    printf("3 - Multiplicacao\n");
-    printf("4 - Divisao\n");
-    scanf("%d", &operacao);
-
-    // Executa a operacao escolhida
-    switch (operacao) {
-        case 1:
-            soma(n1, d1, n2, d2);  // Chama a funcao para soma
-            break;
-        case 2:
-            subtracao(n1, d1, n2, d2);  // Chama a funcao para subtracao
-            break;
-        case 3:
-            multiplicacao(n1, d1, n2, d2);  // Chama a funcao para multiplicacao
-            break;
-        case 4:
-            divisao(n1, d1, n2, d2);  // Chama a funcao para divisao
-            break;
-        default:
-            // Caso o usuario digite uma opcao invalida
-            printf("Opcao invalida!\n");
-            break;
+        //Executa a operação conforme a escolha do usuário
+        switch (r)
+        {
+            case '1' : somar_fracoes(a,b,c,d);break;
+            case '2' : subtrair_fracoes(a,b,c,d);break;
+            case '3' : multiplicar_fracoes(a,b,c,d);break;
+            case '4' : dividir_fracoes (a,b,c,d); break;
+        }
     }
 
-    return 0;
+    return 0; // Fim da função main
+}
+//Função para obter as duas frações do usuário
+void obter_fracoes ()
+{
+    printf("\n1a fracao: ");
+    scanf ("%d %d", &a, &b); //Lê o numerador e o denominador 1a fracao
+    printf("\n2a fracao: ");
+    scanf ("%d %d", &c, &d); //Lê o numerador e o denominador 2a fracao
+}
+
+//Função para somar duas frações: (x/y) + (u/v)
+void somar_fracoes (int x,int y, int u, int v)
+{
+    int n,d;
+    n= x*v + u *v; // Numerador
+    d= y*v; //Denominador comum
+    simplificar_fracao (n,d);
+}
+void subtrair_fracoes (int x,int y, int u, int v)
+{
+    int n,d;
+    n= x*v - u *v;
+    d= y*v;
+    simplificar_fracao (n,d);
+}
+
+void multiplicar_fracoes (int x,int y, int u, int v)
+{
+    int n,d;
+    n= x*u; //Multiplica os numeradores
+    d= y*v; // Multiplica os denominadores
+    simplificar_fracao (n,d);
+}
+void dividir_fracoes (int x,int y, int u, int v)
+{
+    int n,d;
+    n= x*v;
+    d= y*u;
+    simplificar_fracao (n,d);
+}
+
+//Função auxiliar para calcular o Maximo divisor comum
+int mdc (int x,int y)
+{
+    int r = 1;
+    while (r!=0)
+    {
+        r = x % y; //Resto da divisão
+        x=y;
+        y=r;
+    }
+    return x; //Quando o resto é zero, o último divisor é o MDC
+}
+
+//Função para simplificar a fração dividino o numerador e o denominador...
+void simplificar_fracao (int x, int y)
+{
+    int m,n,d;
+    m= mdc(x,y); // Encontra o MDC entre o numerador e o denominador
+    n = x/m; //Divide o numerador pelo MDC
+    d = y/m; //Divide o denominador pelo MDC
+    printf("Resultado ; %d / %d\n", n,d);
+    system ("PAUSE"); //Aguarda o usuário pressionar uma tecla
 }
